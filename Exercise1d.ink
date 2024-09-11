@@ -13,7 +13,8 @@ This exercise will demonstrate the following in the example video:
 */
 
 
-VAR time = 0 //  0 Morning, 1 Noon, 2 Night
+VAR time = -1 //  0 Morning, 1 Noon, 2 Night
+VAR tide = 0
 
 
 
@@ -21,15 +22,40 @@ VAR time = 0 //  0 Morning, 1 Noon, 2 Night
 -> seashore
 
 == seashore ==
-You are sitting on the beach. 
+You are sitting on the beach. {tide == 0 | The receding water has revealed a passage leading down into the sand.}
 
-+ [Wait] -> seashore
+
+It is {advance_time()}
+It is {tide_funk()} tide
+
++ {tide == 0} [Go down into the sand.] -> sandCastle
++ [Stroll down the beach.] -> beach2
 -> DONE
+
+== sandCastle ==
+You enter a dinmly lit sandy room under the beach. {It looks stable enough. | It looks a little worn down. | It looks like it is about to collapse. | It is about to collapse.} The passage keeps going down ahead.
+
++ [Go back up to the beach.] -> seashore
++ [Keep heading down.] -> castle2
+
+== castle2
+You can hardly see anything. After your eyes adjust, you can see a small statue in the wall that seems to be carved out of some kind of gemstone. Your instincs say you shouldn't take it, but it does look expensive...
+
++ [Take it.] -> death
++ [Leave.] -> sandCastle
+
+== death ==
+You grab the statue, and something starts trickling out of the hole the statue was in. You realize with horror that it's ocean water. Before you have time to leave, water starts spewing through the hole, and the entire room is filled with water before collapsing entirely.
+
+-> END
 
 == beach2 ==
 This is further down the beach.
 
-+ [Move back up the beach] -> seashore
+It is {advance_time()}
+It is {tide_funk()} tide
+* {time == 1 and tide == 0} [Pick up some seashells] ->shells
++ [Stroll back up the beach] -> seashore
 
 == shells ==
 You pick up the shells
@@ -43,22 +69,34 @@ You pick up the shells
         - time > 2:
             ~ time = 0
     }    
-    /*
+    
     {    
         - time == 0:
             ~ return "Morning"
         
         - time == 1:
             ~ return "Noon"
-        
+
         - time == 2:
             ~ return "Night"
     
     }
-    */
+    
     
         
     ~ return time
     
+== function tide_funk ==
+
+{
+    - tide == 0:
+        ~tide = 1
+        ~return "high"
+    -tide == 1:
+        ~tide = 0
+        ~return "low"
+}
+
+~return tide
     
     

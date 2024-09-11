@@ -1,5 +1,5 @@
 # Exercise-01d-Inky-Misc
 
-# Your Name
+# Ian Weaver
 
-# Your Github username
+# Skadeddi
